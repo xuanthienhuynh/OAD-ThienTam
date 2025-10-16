@@ -1,5 +1,6 @@
 package DAO;
 
+import advanceMethod.advance;
 import data.MyConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,7 +9,7 @@ import java.sql.SQLException;
 public class customerDAO {
 
     public static String taoMaKHMoi() {
-        String newMaKH = "KH1"; // mặc định nếu bảng rỗng
+        String newMaKH = "KH0001"; // mặc định nếu bảng rỗng
         String sql = "SELECT TOP 1 MaKH FROM KhachHang ORDER BY CAST(SUBSTRING(MaKH, 3, LEN(MaKH)) AS INT) DESC";
 
         try (Connection con = MyConnection.createConnection();
@@ -16,10 +17,11 @@ public class customerDAO {
 
             var rs = pst.executeQuery();
             if (rs.next()) {
-                String lastMaKH = rs.getString("MaKH"); // ví dụ: "KH999"
-                int num = Integer.parseInt(lastMaKH.substring(2)); // lấy phần số
-                num++;
-                newMaKH = "KH" + num; // Tạo mã mới
+                String lastMaHD = rs.getString("Makh"); // Ví dụ: "DH0009"
+                int num = Integer.parseInt(lastMaHD.substring(2)); // Lấy phần số (9)
+                num++; // Tăng lên 10
+                String soMoi = advance.calculateID(num); // Tính chuỗi số mới (0010)
+                newMaKH = "KH" + soMoi; // Ghép thành "DH0010"
             }
 
         } catch (SQLException e) {

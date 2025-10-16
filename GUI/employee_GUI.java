@@ -90,7 +90,7 @@ public class employee_GUI extends JFrame {
 
         JScrollPane employeeScroll = new JScrollPane();
         employeeScroll.setViewportView(employeeStatus);
-
+        employeeScroll.getVerticalScrollBar().setUnitIncrement(16);
         GridBagConstraints gdc_employee = new GridBagConstraints();
 
         gdc_employee.gridwidth = 1;
@@ -213,7 +213,7 @@ public class employee_GUI extends JFrame {
 
         JScrollPane orderScroll = new JScrollPane();
         orderScroll.setViewportView(orderSell);
-
+        orderScroll.getVerticalScrollBar().setUnitIncrement(16);
         GridBagConstraints gdc_ordersell = new GridBagConstraints();
 
         JLabel titleSell = new JLabel("Danh Sách Hóa Đơn Bán");
@@ -353,6 +353,28 @@ public class employee_GUI extends JFrame {
         gdc_ordersell.insets = new Insets(0, 5, 30, 50);
         orderSell.add(xoaSell, gdc_ordersell);
 
+        JButton new_kh = new JButton("KH MỚI");
+        new_kh.setFont(new Font(null, Font.PLAIN, 18));
+        new_kh.setForeground(Color.BLACK);
+        new_kh.setIcon(data.imagePath.resize_addButton);
+        gdc_ordersell.gridx = 4;
+        gdc_ordersell.gridy = 4;
+        gdc_ordersell.fill = GridBagConstraints.HORIZONTAL;
+        gdc_ordersell.insets = new Insets(0, 5, 30, 50);
+        orderSell.add(new_kh, gdc_ordersell);
+
+        new_kh.addActionListener(new ActionListener() {
+
+            @Override
+
+            public void actionPerformed(ActionEvent e) {
+
+                signup_GUI signupWindow = new signup_GUI();
+
+            }
+
+        });
+
         // Panel Hóa đơn nhập
         JPanel orderCollect = new JPanel();
         orderCollect.setBackground(Color.white);
@@ -360,6 +382,7 @@ public class employee_GUI extends JFrame {
 
         JScrollPane orderCollectScroll = new JScrollPane();
         orderCollectScroll.setViewportView(orderCollect);
+        orderCollectScroll.getVerticalScrollBar().setUnitIncrement(16);
 
         GridBagConstraints gdc_ordercollect = new GridBagConstraints();
 
@@ -1280,7 +1303,7 @@ public class employee_GUI extends JFrame {
 
         // tự động thống kê
         employee_BUS.loadStatistic(tf_ngaybatdau, tf_ngayketthuc, wallet,
-        customer, nv, loai);
+                customer, nv, loai);
 
         // thống kê
         chon.addActionListener(new ActionListener() {

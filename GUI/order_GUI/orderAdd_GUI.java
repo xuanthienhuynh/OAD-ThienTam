@@ -1,5 +1,18 @@
 package GUI.order_GUI;
 
+import BUS.customer_BUS;
+import BUS.medicine_BUS;
+import BUS.order_BUS;
+import BUS.order_details_BUS;
+import BUS.promotion_BUS;
+import DTO.customer_DTO;
+import DTO.employee_DTO;
+import DTO.medicine_DTO;
+import DTO.order_details_DTO;
+import GUI.customerSearch_GUI;
+import GUI.medicine_GUI.medicineSearch_GUI;
+import GUI.promotionSearch_GUI;
+import advanceMethod.advance;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -10,12 +23,13 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -35,25 +49,11 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import BUS.customer_BUS;
-import BUS.medicine_BUS;
-import BUS.order_BUS;
-import BUS.order_details_BUS;
-import BUS.promotion_BUS;
-import DTO.customer_DTO;
-import DTO.employee_DTO;
-import DTO.medicine_DTO;
-import DTO.order_details_DTO;
-import GUI.customerSearch_GUI;
-import GUI.promotionSearch_GUI;
-import GUI.medicine_GUI.medicineSearch_GUI;
-import advanceMethod.advance;
-
 public class orderAdd_GUI extends JFrame {
     public orderAdd_GUI(DefaultTableModel modelCollect, employee_DTO em, DefaultTableModel modelOrder) {
         this.setSize(1500, 800);
         this.setTitle("Lập hóa đơn");
-        ImageIcon logo = new ImageIcon(advance.img+"logo.png");
+        ImageIcon logo = new ImageIcon(advance.img + "logo.png");
         this.setIconImage(logo.getImage());
         this.getContentPane().setBackground(Color.white);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -66,6 +66,7 @@ public class orderAdd_GUI extends JFrame {
 
         JScrollPane scroll_frame = new JScrollPane();
         scroll_frame.setViewportView(main);
+        scroll_frame.getVerticalScrollBar().setUnitIncrement(26);
 
         this.getContentPane().add(scroll_frame, BorderLayout.CENTER);
 
@@ -110,7 +111,7 @@ public class orderAdd_GUI extends JFrame {
         gdc.anchor = GridBagConstraints.CENTER;
         gdc.insets = new Insets(20, 0, 30, 0);
         main.add(title_ds, gdc);
-        
+
         JLabel title_thanhtoan = new JLabel("Thông Tin Thanh Toán");
         title_thanhtoan.setForeground(Color.BLACK);
         title_thanhtoan.setFont(new Font(null, Font.BOLD, 26));
@@ -121,9 +122,39 @@ public class orderAdd_GUI extends JFrame {
         gdc.insets = new Insets(20, 0, 30, 0);
         main.add(title_thanhtoan, gdc);
 
-        JTextField search_bar = new JTextField("Nhập tên khách hàng...");
-        search_bar.setForeground(Color.BLACK);
-        search_bar.setFont(new Font(null, Font.PLAIN, 20));
+        final String placeholder = "Nhập tên khách hàng...";
+        final Font fontGoiY = new Font(null, Font.ITALIC, 20); // Font in nghiêng cho gợi ý
+        final Font fontNhapLieu = new Font(null, Font.PLAIN, 20); // Font thường khi nhập
+
+        // 2. Thiết lập trạng thái ban đầu cho placeholder
+        JTextField search_bar = new JTextField(placeholder);
+        search_bar.setForeground(Color.GRAY); // Màu xám cho chữ gợi ý
+        search_bar.setFont(fontGoiY);
+
+        search_bar.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Khi người dùng click vào...
+                if (search_bar.getText().equals(placeholder)) {
+                    search_bar.setText("");
+                    // ...đổi sang kiểu chữ thường và màu đen để sẵn sàng nhập liệu
+                    search_bar.setFont(fontNhapLieu);
+                    search_bar.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Khi người dùng click ra ngoài...
+                if (search_bar.getText().isEmpty()) {
+                    // ...và không nhập gì, trả lại kiểu chữ nghiêng và màu xám
+                    search_bar.setText(placeholder);
+                    search_bar.setFont(fontGoiY);
+                    search_bar.setForeground(Color.GRAY);
+                }
+            }
+        });
+
         gdc.gridx = 0;
         gdc.gridy = 1;
         gdc.gridwidth = 1;
@@ -170,7 +201,7 @@ public class orderAdd_GUI extends JFrame {
         gdc.insets = new Insets(0, 10, 30, 50);
         main.add(reset, gdc);
 
-        String[] columns = {"Mã khách hàng", "Tên khách hàng", "Số điện thoại", "Tình trạng"};
+        String[] columns = { "Mã khách hàng", "Tên khách hàng", "Số điện thoại", "Tình trạng" };
         DefaultTableModel model = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -407,7 +438,7 @@ public class orderAdd_GUI extends JFrame {
         gdc.insets = new Insets(20, 10, 30, 50);
         main.add(reset_med, gdc);
 
-        String[] columns_med = {"Mã thuốc", "Tên thuốc", "Tình trạng"};
+        String[] columns_med = { "Mã thuốc", "Tên thuốc", "Tình trạng" };
         DefaultTableModel modelMedic = new DefaultTableModel(columns_med, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -495,7 +526,7 @@ public class orderAdd_GUI extends JFrame {
         gdc.weightx = 3;
         gdc.insets = new Insets(0, 10, 30, 0);
         main.add(tf_hop, gdc);
-        
+
         JLabel slhop = new JLabel("Hộp");
         slhop.setForeground(Color.BLACK);
         slhop.setFont(new Font(null, Font.PLAIN, 20));
@@ -522,7 +553,7 @@ public class orderAdd_GUI extends JFrame {
         gdc.weightx = 3;
         gdc.insets = new Insets(0, 0, 30, 0);
         main.add(tf_vi, gdc);
-        
+
         JLabel slvi = new JLabel("Vỉ");
         slvi.setForeground(Color.BLACK);
         slvi.setFont(new Font(null, Font.PLAIN, 20));
@@ -549,7 +580,7 @@ public class orderAdd_GUI extends JFrame {
         gdc.weightx = 3;
         gdc.insets = new Insets(0, 0, 30, 0);
         main.add(tf_vien, gdc);
-        
+
         JLabel slvien = new JLabel("Viên");
         slvien.setForeground(Color.BLACK);
         slvien.setFont(new Font(null, Font.PLAIN, 20));
@@ -585,7 +616,7 @@ public class orderAdd_GUI extends JFrame {
         gdc.weightx = 3;
         gdc.insets = new Insets(0, 10, 30, 0);
         main.add(rad_hop, gdc);
-        
+
         JLabel hop = new JLabel("Hộp");
         hop.setForeground(Color.BLACK);
         hop.setFont(new Font(null, Font.PLAIN, 20));
@@ -609,7 +640,7 @@ public class orderAdd_GUI extends JFrame {
         gdc.weightx = 3;
         gdc.insets = new Insets(0, 0, 30, 0);
         main.add(rad_vi, gdc);
-        
+
         JLabel vi = new JLabel("Vỉ");
         vi.setForeground(Color.BLACK);
         vi.setFont(new Font(null, Font.PLAIN, 20));
@@ -633,7 +664,7 @@ public class orderAdd_GUI extends JFrame {
         gdc.weightx = 3;
         gdc.insets = new Insets(0, 0, 30, 0);
         main.add(rad_vien, gdc);
-        
+
         JLabel vien = new JLabel("Viên");
         vien.setForeground(Color.BLACK);
         vien.setFont(new Font(null, Font.PLAIN, 20));
@@ -764,7 +795,7 @@ public class orderAdd_GUI extends JFrame {
         gdc.insets = new Insets(20, 10, 30, 50);
         main.add(reset_km, gdc);
 
-        String[] columns_ds = {"Mã CTĐH", "Tên thuốc", "Đơn vị", "Số lượng", "Đơn giá", "Thành tiền", ""};
+        String[] columns_ds = { "Mã CTĐH", "Tên thuốc", "Đơn vị", "Số lượng", "Đơn giá", "Thành tiền", "" };
         DefaultTableModel model_ds = new DefaultTableModel(columns_ds, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -799,7 +830,7 @@ public class orderAdd_GUI extends JFrame {
         main.add(scroll_ds, gdc);
         gdc.gridheight = 1;
 
-        String[] columns_km = {"Mã KM", "Tên KM", "Giảm (%)", "Điểm", "Tình trạng"};
+        String[] columns_km = { "Mã KM", "Tên KM", "Giảm (%)", "Điểm", "Tình trạng" };
         DefaultTableModel modelKM = new DefaultTableModel(columns_km, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -1002,15 +1033,16 @@ public class orderAdd_GUI extends JFrame {
 
         this.setVisible(true);
 
-        //xử lý tính năng
+        // xử lý tính năng
 
-        //xử lý khách hàng
-        //load data khách hàng
+        // xử lý khách hàng
+        // load data khách hàng
         customer_BUS.loadData(model, true);
 
         table.getColumn("Tình trạng").setCellRenderer(new DefaultTableCellRenderer() {
             @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
                 JLabel label = (value instanceof JLabel) ? (JLabel) value : new JLabel();
 
                 // Thiết lập màu nền khi được chọn
@@ -1023,75 +1055,75 @@ public class orderAdd_GUI extends JFrame {
                 }
 
                 return label;
-            }   
+            }
         });
-    
-        //tìm kiếm khách hàng
+
+        // tìm kiếm khách hàng
         search.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 customer_BUS.findCustomer(model, search_bar);
             }
         });
-    
-        //tìm kiếm nâng cao khách hàng
+
+        // tìm kiếm nâng cao khách hàng
         search_advance.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new customerSearch_GUI(model);
             }
         });
-    
-        //chọn khách hàng
+
+        // chọn khách hàng
         table.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(!customer_BUS.upData(table, model, tf_tenkh, tf_email, tf_sdt, ta_diachi,
-                tf_diemkm))
-                    JOptionPane.showMessageDialog(null, 
-                    "Thông tin khách hàng này đã ngừng hoạt động.");
+                if (!customer_BUS.upData(table, model, tf_tenkh, tf_email, tf_sdt, ta_diachi,
+                        tf_diemkm))
+                    JOptionPane.showMessageDialog(null,
+                            "Thông tin khách hàng này đã ngừng hoạt động.");
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
         });
-    
-        //chọn button
+
+        // chọn button
         customer_DTO customer = new customer_DTO();
         btn_chon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!customer_BUS.chooseCus(tf_email, customer)) {
+                if (!customer_BUS.chooseCus(tf_email, customer)) {
                     JOptionPane.showMessageDialog(null, "Vui lòng chọn khách hàng trước!");
                 }
                 System.out.println(customer.getMakh());
-                
+
                 order_BUS.purchase(customer, em, null, tf_tenKH, tf_tenNV, ta_diachiTT, tf_tongtien);
             }
         });
-        
-        //reset khách hàng
+
+        // reset khách hàng
         reset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1107,13 +1139,14 @@ public class orderAdd_GUI extends JFrame {
             }
         });
 
-        //xử lý thuốc
-        //load data thuốc
+        // xử lý thuốc
+        // load data thuốc
         medicine_BUS.loadDataOther(modelMedic, true);
 
         tableMedic.getColumn("Tình trạng").setCellRenderer(new DefaultTableCellRenderer() {
             @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
                 JLabel label = (value instanceof JLabel) ? (JLabel) value : new JLabel();
 
                 // Thiết lập màu nền khi được chọn
@@ -1126,39 +1159,39 @@ public class orderAdd_GUI extends JFrame {
                 }
 
                 return label;
-            }   
+            }
         });
-    
-        //tìm kiếm thuốc
+
+        // tìm kiếm thuốc
         search_med.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 medicine_BUS.searchMedicineOther(search_bar_med, modelMedic);
             }
         });
-    
-        //tìm kiếm thuốc nâng cao
+
+        // tìm kiếm thuốc nâng cao
         search_advance_med.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new medicineSearch_GUI(null, modelMedic);
             }
         });
-        
-        //chọn thuốc
+
+        // chọn thuốc
         medicine_DTO med = new medicine_DTO();
         tableMedic.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(!medicine_BUS.chooseMed(tableMedic, modelMedic, tf_tenthuoc, tf_hop, tf_vi, 
-                tf_vien, med))
-                    JOptionPane.showMessageDialog(null, 
-                    "Thông tin thuốc này đã ngừng hoạt động.");
-                if(rad_hop.isSelected())
+                if (!medicine_BUS.chooseMed(tableMedic, modelMedic, tf_tenthuoc, tf_hop, tf_vi,
+                        tf_vien, med))
+                    JOptionPane.showMessageDialog(null,
+                            "Thông tin thuốc này đã ngừng hoạt động.");
+                if (rad_hop.isSelected())
                     medicine_BUS.radioDonVi(med, tf_giaban, 0);
-                if(rad_vi.isSelected())
+                if (rad_vi.isSelected())
                     medicine_BUS.radioDonVi(med, tf_giaban, 1);
-                if(rad_vien.isSelected())
+                if (rad_vien.isSelected())
                     medicine_BUS.radioDonVi(med, tf_giaban, 2);
                 System.out.println(med.getMathuoc());
             }
@@ -1166,29 +1199,29 @@ public class orderAdd_GUI extends JFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
         });
 
-        //cập nhật giá bán
+        // cập nhật giá bán
         rad_hop.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1210,36 +1243,36 @@ public class orderAdd_GUI extends JFrame {
             }
         });
 
-        //thêm chi tiết đơn hàng
+        // thêm chi tiết đơn hàng
         ArrayList<order_details_DTO> ods = new ArrayList<>();
         btn_them.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int ketQua = order_details_BUS.addOrderDetails(med, rad_hop, rad_vi, rad_vien, 
-                tf_hop, tf_vi, tf_vien, tf_giaban, tf_slmua, ods, model_ds, modelCollect,
-                tf_tenthuoc);
-                if(ketQua == 0) {
-                    JOptionPane.showMessageDialog(null, 
-                    "Đã hết đơn vị thuốc này.");
-                } else if(ketQua == 1) {
-                    JOptionPane.showMessageDialog(null, 
-                    "Số lượng mua vượt quá số lượng còn.");
-                } else if(ketQua == -1) {
-                    JOptionPane.showMessageDialog(null, 
-                    "Vui lòng chọn thuốc.");
-                } else if(ketQua == -2) {
-                    JOptionPane.showMessageDialog(null, 
-                    "Vui lòng chọn đơn vị.");
+                int ketQua = order_details_BUS.addOrderDetails(med, rad_hop, rad_vi, rad_vien,
+                        tf_hop, tf_vi, tf_vien, tf_giaban, tf_slmua, ods, model_ds, modelCollect,
+                        tf_tenthuoc);
+                if (ketQua == 0) {
+                    JOptionPane.showMessageDialog(null,
+                            "Đã hết đơn vị thuốc này.");
+                } else if (ketQua == 1) {
+                    JOptionPane.showMessageDialog(null,
+                            "Số lượng mua vượt quá số lượng còn.");
+                } else if (ketQua == -1) {
+                    JOptionPane.showMessageDialog(null,
+                            "Vui lòng chọn thuốc.");
+                } else if (ketQua == -2) {
+                    JOptionPane.showMessageDialog(null,
+                            "Vui lòng chọn đơn vị.");
                 }
 
-                
                 order_BUS.purchase(customer, em, ods, tf_tenKH, tf_tenNV, ta_diachiTT, tf_tongtien);
             }
         });
 
         table_ds.getColumn("").setCellRenderer(new DefaultTableCellRenderer() {
             @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
                 JButton button = (value instanceof JButton) ? (JButton) value : new JButton();
 
                 if (isSelected) {
@@ -1247,49 +1280,49 @@ public class orderAdd_GUI extends JFrame {
                 } else {
                     button.setBackground(Color.WHITE); // Màu nền mặc định
                 }
-        
+
                 button.setOpaque(true);
                 button.setBorderPainted(true);
                 return button;
-            }   
+            }
         });
 
-        //xóa chi tiết đơn hàng
+        // xóa chi tiết đơn hàng
         table_ds.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                order_details_BUS.deleteOrderDetails(ods, model_ds, table_ds, rad_hop, 
-                rad_vi, rad_vien, tf_hop, tf_vi, tf_vien, tf_giaban, modelCollect);
-                
+                order_details_BUS.deleteOrderDetails(ods, model_ds, table_ds, rad_hop,
+                        rad_vi, rad_vien, tf_hop, tf_vi, tf_vien, tf_giaban, modelCollect);
+
                 order_BUS.purchase(customer, em, ods, tf_tenKH, tf_tenNV, ta_diachiTT, tf_tongtien);
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
         });
 
-        //reset thuốc
+        // reset thuốc
         reset_med.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1303,20 +1336,21 @@ public class orderAdd_GUI extends JFrame {
                 tf_giaban.setText("");
                 tf_slmua.setValue(1);
 
-                order_details_BUS.resetDelete(ods, model_ds, tf_hop, tf_vi, tf_vien, rad_hop, 
-                rad_vi, rad_vien, tf_giaban);
+                order_details_BUS.resetDelete(ods, model_ds, tf_hop, tf_vi, tf_vien, rad_hop,
+                        rad_vi, rad_vien, tf_giaban);
                 ods.clear();
                 order_details_BUS.loadData(ods, model_ds);
             }
         });
-    
-        //xử lý khuyến mãi
-        //load khuyến mãi
+
+        // xử lý khuyến mãi
+        // load khuyến mãi
         promotion_BUS.loadData(modelKM);
 
         tableKM.getColumn("Tình trạng").setCellRenderer(new DefaultTableCellRenderer() {
             @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
                 JLabel label = (value instanceof JLabel) ? (JLabel) value : new JLabel();
 
                 // Thiết lập màu nền khi được chọn
@@ -1329,10 +1363,10 @@ public class orderAdd_GUI extends JFrame {
                 }
 
                 return label;
-            }   
+            }
         });
 
-        //tìm kiếm khuyến mãi
+        // tìm kiếm khuyến mãi
         search_km.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1340,7 +1374,7 @@ public class orderAdd_GUI extends JFrame {
             }
         });
 
-        //tìm kiếm nâng cao khuyến mãi
+        // tìm kiếm nâng cao khuyến mãi
         search_advance_km.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1348,7 +1382,7 @@ public class orderAdd_GUI extends JFrame {
             }
         });
 
-        //reset khuyến mãi
+        // reset khuyến mãi
         reset_km.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1359,65 +1393,65 @@ public class orderAdd_GUI extends JFrame {
                 order_BUS.purchase(customer, em, ods, tf_tenKH, tf_tenNV, ta_diachiTT, tf_tongtien);
             }
         });
-    
-        //load thanh toán
+
+        // load thanh toán
         order_BUS.purchase(customer, em, ods, tf_tenKH, tf_tenNV, ta_diachiTT, tf_tongtien);
 
-        //chọn khuyến mãi
+        // chọn khuyến mãi
         tableKM.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 order_BUS.purchase(customer, em, ods, tf_tenKH, tf_tenNV, ta_diachiTT, tf_tongtien);
 
-                int ketQua = promotion_BUS.choosePromotion(modelKM, tableKM, tf_tenKH, 
-                tf_km, customer, tf_tongtien);
-                if(ketQua == 3) {
-                    JOptionPane.showMessageDialog(null, 
-                    "Khách hàng không đủ điểm để áp dụng chương trình khuyến mãi này.");
+                int ketQua = promotion_BUS.choosePromotion(modelKM, tableKM, tf_tenKH,
+                        tf_km, customer, tf_tongtien);
+                if (ketQua == 3) {
+                    JOptionPane.showMessageDialog(null,
+                            "Khách hàng không đủ điểm để áp dụng chương trình khuyến mãi này.");
                 }
-                if(ketQua == 2) {
-                    JOptionPane.showMessageDialog(null, 
-                    "Chương trình khuyến mãi này đã ngừng hoạt động.");
+                if (ketQua == 2) {
+                    JOptionPane.showMessageDialog(null,
+                            "Chương trình khuyến mãi này đã ngừng hoạt động.");
                 }
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
         });
-    
-        //hoàn tất
+
+        // hoàn tất
         finish.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!order_BUS.completeOrder(customer, em, tf_tongtien, ods, tf_km, modelOrder)) {
-                    JOptionPane.showMessageDialog(null, 
-                    "Danh sách mua thuốc đang rỗng!");
+                if (!order_BUS.completeOrder(customer, em, tf_tongtien, ods, tf_km, modelOrder)) {
+                    JOptionPane.showMessageDialog(null,
+                            "Danh sách mua thuốc đang rỗng!");
                 }
 
                 order_BUS.purchase(customer, em, ods, tf_tenKH, tf_tenNV, ta_diachiTT, tf_tongtien);
 
-                //khách hàng
+                // khách hàng
                 search_bar.setText("Nhập tên khách hàng...");
                 tf_tenkh.setText("");
                 tf_email.setText("");
@@ -1427,8 +1461,8 @@ public class orderAdd_GUI extends JFrame {
                 customer_BUS.loadData(model, true);
                 customer.setMakh(null);
                 tf_tenKH.setText("");
-                
-                //thuốc
+
+                // thuốc
                 search_bar_med.setText("Nhập tên thuốc...");
                 medicine_BUS.loadDataOther(modelMedic, true);
                 tf_tenthuoc.setText("");
@@ -1441,20 +1475,20 @@ public class orderAdd_GUI extends JFrame {
                 ods.clear();
                 order_details_BUS.loadData(ods, model_ds);
 
-                //khuyến mãi
+                // khuyến mãi
                 search_bar_km.setText("Nhập tên khuyến mãi...");
                 promotion_BUS.loadData(modelKM);
                 tf_km.setText("");
             }
         });
 
-        //reset all
+        // reset all
         reset_all.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 order_BUS.purchase(customer, em, ods, tf_tenKH, tf_tenNV, ta_diachiTT, tf_tongtien);
 
-                //khách hàng
+                // khách hàng
                 search_bar.setText("Nhập tên khách hàng...");
                 tf_tenkh.setText("");
                 tf_email.setText("");
@@ -1464,8 +1498,8 @@ public class orderAdd_GUI extends JFrame {
                 customer_BUS.loadData(model, true);
                 customer.setMakh(null);
                 tf_tenKH.setText("");
-                
-                //thuốc
+
+                // thuốc
                 search_bar_med.setText("Nhập tên thuốc...");
                 medicine_BUS.loadDataOther(modelMedic, true);
                 tf_tenthuoc.setText("");
@@ -1476,24 +1510,24 @@ public class orderAdd_GUI extends JFrame {
                 tf_giaban.setText("");
                 tf_slmua.setValue(1);
 
-                order_details_BUS.resetDelete(ods, model_ds, tf_hop, tf_vi, tf_vien, rad_hop, 
-                rad_vi, rad_vien, tf_giaban);
+                order_details_BUS.resetDelete(ods, model_ds, tf_hop, tf_vi, tf_vien, rad_hop,
+                        rad_vi, rad_vien, tf_giaban);
                 ods.clear();
                 order_details_BUS.loadData(ods, model_ds);
 
-                //khuyến mãi
+                // khuyến mãi
                 search_bar_km.setText("Nhập tên khuyến mãi...");
                 promotion_BUS.loadData(modelKM);
                 tf_km.setText("");
             }
         });
-    
-        //reset thuốc khi tắt window
+
+        // reset thuốc khi tắt window
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                order_details_BUS.resetDelete(ods, model_ds, tf_hop, tf_vi, tf_vien, rad_hop, 
-                rad_vi, rad_vien, tf_giaban);
+                order_details_BUS.resetDelete(ods, model_ds, tf_hop, tf_vi, tf_vien, rad_hop,
+                        rad_vi, rad_vien, tf_giaban);
 
                 dispose();
             }

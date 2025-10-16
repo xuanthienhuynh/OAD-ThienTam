@@ -167,6 +167,7 @@ public class admin_GUI extends JFrame {
 
         JScrollPane employeeScroll = new JScrollPane();
         employeeScroll.setViewportView(employeeStatus);
+        employeeScroll.getVerticalScrollBar().setUnitIncrement(16);
 
         GridBagConstraints gdc_employee = new GridBagConstraints();
 
@@ -282,7 +283,8 @@ public class admin_GUI extends JFrame {
 
         JScrollPane supplierScroll = new JScrollPane();
         supplierScroll.setViewportView(supplier);
-        
+        supplierScroll.getVerticalScrollBar().setUnitIncrement(16);
+
         GridBagConstraints gdc_supplier = new GridBagConstraints();
 
         JLabel titleSup = new JLabel("Danh Sách Nhà Cung Cấp");
@@ -392,6 +394,7 @@ public class admin_GUI extends JFrame {
         gdc_supplier.weightx = 1.0;
         gdc_supplier.weighty = 1.0;
         supplier.add(scrollSup, gdc_supplier);
+        scrollSup.getVerticalScrollBar().setUnitIncrement(16);
 
         supplier_BUS.loadTable(modelSupplier);
         tableSupplier.setModel(modelSupplier);
@@ -403,7 +406,8 @@ public class admin_GUI extends JFrame {
 
         JScrollPane storageScroll = new JScrollPane();
         storageScroll.setViewportView(storage);
-        
+        storageScroll.getVerticalScrollBar().setUnitIncrement(16);
+
         GridBagConstraints gdc_storage = new GridBagConstraints();
 
         JLabel titleStorage = new JLabel("Danh sách tồn kho");
@@ -472,6 +476,7 @@ public class admin_GUI extends JFrame {
         gdc_storage.weightx = 1.0;
         gdc_storage.weighty = 1.0;
         storage.add(scrollStorage, gdc_storage);
+        scrollStorage.getVerticalScrollBar().setUnitIncrement(16);
 
         storage_BUS.loadDataTable(modelStorage);
         tableStorage.setModel(modelStorage);
@@ -483,7 +488,8 @@ public class admin_GUI extends JFrame {
 
         JScrollPane customerScroll = new JScrollPane();
         customerScroll.setViewportView(panel_customer);
-        
+        customerScroll.getVerticalScrollBar().setUnitIncrement(16);
+
         GridBagConstraints gdc_customer = new GridBagConstraints();
 
         JLabel titleCustomer = new JLabel("Danh sách khách hàng");
@@ -594,6 +600,7 @@ public class admin_GUI extends JFrame {
         gdc_customer.weightx = 1.0;
         gdc_customer.weighty = 1.0;
         panel_customer.add(scrollCustomer, gdc_customer);
+        scrollCustomer.getVerticalScrollBar().setUnitIncrement(16);
 
         customer_BUS.loadTable(modelCustomer);
         tableCustomer.setModel(modelCustomer);
@@ -605,7 +612,8 @@ public class admin_GUI extends JFrame {
 
         JScrollPane employeeScroll_1 = new JScrollPane();
         employeeScroll_1.setViewportView(panel_employee);
-        
+        employeeScroll_1.getVerticalScrollBar().setUnitIncrement(16);
+
         GridBagConstraints gdc_employee_1 = new GridBagConstraints();
 
         JLabel titleEmployee = new JLabel("Danh sách nhân viên");
@@ -716,7 +724,7 @@ public class admin_GUI extends JFrame {
         gdc_employee_1.weightx = 1.0;
         gdc_employee_1.weighty = 1.0;
         panel_employee.add(scrollEmployee, gdc_employee_1);
-
+        scrollEmployee.getVerticalScrollBar().setUnitIncrement(16);
         employee_BUS.loadTable(modelEmployee);
         tableEmployee.setModel(modelEmployee);
 
@@ -727,7 +735,7 @@ public class admin_GUI extends JFrame {
 
         JScrollPane promotionScroll = new JScrollPane();
         promotionScroll.setViewportView(panel_promotion);
-        
+
         GridBagConstraints gdc_promotion = new GridBagConstraints();
 
         JLabel titlePromotion = new JLabel("Danh sách khuyến mãi");
@@ -849,7 +857,7 @@ public class admin_GUI extends JFrame {
 
         JScrollPane storeScroll = new JScrollPane();
         storeScroll.setViewportView(panel_store);
-        
+
         GridBagConstraints gdc_store = new GridBagConstraints();
 
         JLabel titleStore = new JLabel("Danh sách nhà thuốc");
@@ -970,7 +978,7 @@ public class admin_GUI extends JFrame {
 
         JScrollPane tkScroll = new JScrollPane();
         tkScroll.setViewportView(panel_tk);
-        
+
         GridBagConstraints gdc_tk = new GridBagConstraints();
 
         JLabel titlepanel_tk = new JLabel("Thống Kê Quản lý");
@@ -1034,8 +1042,7 @@ public class admin_GUI extends JFrame {
         gdc_tk.insets = new Insets(0, 20, 30, 10);
         panel_tk.add(tf_ngayketthuc, gdc_tk);
 
-        String[] options = { "Không có", "Theo doanh thu", "Theo lượng khách hàng"
-        , "Theo đơn hàng nhập"};
+        String[] options = { "Không có", "Theo doanh thu", "Theo lượng khách hàng", "Theo đơn hàng nhập" };
         JComboBox loai = new JComboBox(options);
         loai.setForeground(Color.BLACK);
         loai.setFont(new Font(null, Font.PLAIN, 20));
@@ -1048,8 +1055,7 @@ public class admin_GUI extends JFrame {
         gdc_tk.insets = new Insets(0, 20, 30, 10);
         panel_tk.add(loai, gdc_tk);
 
-        String[] options2 = { "Không có", "Biểu đồ cột", "Biều đồ miền"
-        , "Biểu đồ tròn"};
+        String[] options2 = { "Không có", "Biểu đồ cột", "Biều đồ miền", "Biểu đồ tròn" };
         JComboBox bieudo = new JComboBox(options2);
         bieudo.setForeground(Color.BLACK);
         bieudo.setFont(new Font(null, Font.PLAIN, 20));
@@ -1076,7 +1082,7 @@ public class admin_GUI extends JFrame {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         JFreeChart chart = ChartFactory.createAreaChart("", "", "", dataset,
-        PlotOrientation.VERTICAL, true, false, false);
+                PlotOrientation.VERTICAL, true, false, false);
 
         ChartPanel columnStatistic = new ChartPanel(chart, false);
         columnStatistic.setMouseWheelEnabled(false);
@@ -1091,7 +1097,7 @@ public class admin_GUI extends JFrame {
         gdc_tk.weighty = 1;
         gdc_tk.insets = new Insets(0, 100, 20, 100);
         panel_tk.add(columnStatistic, gdc_tk);
-        
+
         tab.addTab("Thông tin", data.imagePath.resize_statusIcon, employeeScroll);
         tab.addTab("Nhà thuốc", data.imagePath.resize_storeIcon, storeScroll);
         tab.addTab("Nhân viên", data.imagePath.resize_employeeIcon, employeeScroll_1);
@@ -1170,15 +1176,15 @@ public class admin_GUI extends JFrame {
         chon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int ketQua = employee_BUS.loadMapAdmin(dataset, loai, tf_ngaybatdau, tf_ngayketthuc, 
-                nv, columnStatistic, bieudo);
-                if(ketQua == 1) {
-                    JOptionPane.showMessageDialog(null, 
-                    "Biểu đồ tròn yêu cầu thống kê trong năm.");
+                int ketQua = employee_BUS.loadMapAdmin(dataset, loai, tf_ngaybatdau, tf_ngayketthuc,
+                        nv, columnStatistic, bieudo);
+                if (ketQua == 1) {
+                    JOptionPane.showMessageDialog(null,
+                            "Biểu đồ tròn yêu cầu thống kê trong năm.");
                 }
-                if(ketQua == -1) {
-                    JOptionPane.showMessageDialog(null, 
-                    "Chưa có dữ liệu để thống kê.");
+                if (ketQua == -1) {
+                    JOptionPane.showMessageDialog(null,
+                            "Chưa có dữ liệu để thống kê.");
                 }
             }
         });
@@ -1195,8 +1201,8 @@ public class admin_GUI extends JFrame {
         importData.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new import1_GUI(modelSupplier, modelCustomer, modelEmployee, 
-                modelPromotion, modelStore);
+                new import1_GUI(modelSupplier, modelCustomer, modelEmployee,
+                        modelPromotion, modelStore);
             }
         });
 

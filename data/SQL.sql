@@ -55,7 +55,11 @@ insert into KhachHang values ('KH0001', N'Tran Linh C', '0904221123', 'tranlinhc
 N'Mã Lò', N'Bình Trị Đông A', N'Bình Tân', N'TPHCM', 0, '123', 1);
 insert into KhachHang values ('KH0002', N'Vu Dinh T', '0904221123', 'vudinhT@gmail.com', '267',
 N'Mã Lò', N'Bình Trị Đông A', N'Bình Tân', N'TPHCM', 0, '123', 1);
+
+insert into KhachHang values ('KH0002', N'Vu Dinh T', '0904221123', 'ht', '267',
+N'Mã Lò', N'Bình Trị Đông A', N'Bình Tân', N'TPHCM', 0, '123', 1);
 select * from KhachHang where tinhtrang = 'True'
+delete from khachhang
 
 CREATE TABLE GioHang (
 	MaGH VARCHAR(10) PRIMARY KEY,

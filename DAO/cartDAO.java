@@ -76,7 +76,7 @@ public class cartDAO {
         return cartList;
     }
 
-    public void xoaSanPhamTrongGio(String magh) {
+    public static void xoaSanPhamTrongGio(String magh) {
         try (Connection con = MyConnection.createConnection()) {
             String sql = "DELETE FROM GioHang WHERE MaGH = ?";
             try (PreparedStatement pst = con.prepareStatement(sql)) {
@@ -209,6 +209,27 @@ public class cartDAO {
         }
 
         return macthdnhap; // Trả về macthdnhap hoặc null nếu không tìm thấy
+    }
+
+    public static String laythongtinMaGH(String makh, String mathuoc) {
+        String magh = null;
+        String sql = "SELECT MaGH FROM GioHang WHERE MaKH = ? AND MaThuoc = ?";
+
+        try (Connection con = MyConnection.createConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setString(1, makh);
+            pst.setString(2, mathuoc);
+
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                magh = rs.getString("MaGH");
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi SQL khi lấy MaGH: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return magh;
     }
 
 }
