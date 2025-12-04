@@ -352,9 +352,30 @@ public class cart_GUI extends JFrame {
                     }
                 });
 
-                JPanel hinhsp = new JPanel();
-                hinhsp.setPreferredSize(new Dimension(60, 50));
-                hinhsp.setBackground(vang);
+                // JPanel hinhsp = new JPanel();
+                // hinhsp.setPreferredSize(new Dimension(60, 50));
+                // hinhsp.setBackground(vang);
+
+                // String maSanPham = c.getMathuoc();
+                // String imagePath = advance.medIMG + maSanPham + ".png";
+                // ImageIcon productImage = new ImageIcon(imagePath);
+
+                // int chieurong = 120;
+                // int chieucao = 90;
+
+                // Image img = productImage.getImage();
+                // Image scaledImg = img.getScaledInstance(chieurong, chieucao,
+                // Image.SCALE_SMOOTH);
+                // productImage = new ImageIcon(scaledImg);
+
+                // JLabel imageLabel = new JLabel(productImage);
+                // imageLabel.setHorizontalAlignment(JLabel.CENTER);
+                // imageLabel.setVerticalAlignment(JLabel.CENTER);
+                // hinhsp.add(imageLabel, BorderLayout.CENTER);
+
+                JPanel hinhsp = new JPanel(new BorderLayout()); // Thêm BorderLayout
+                hinhsp.setPreferredSize(new Dimension(120, 90)); // Kích thước vừa bằng ảnh
+                hinhsp.setBackground(linen);
 
                 String maSanPham = c.getMathuoc();
                 String imagePath = advance.medIMG + maSanPham + ".png";
@@ -393,7 +414,7 @@ public class cart_GUI extends JFrame {
                     } else {
                         selectedProducts.removeIf(product -> product.getMathuoc().equals(c.getMathuoc()));
                     }
-                    updateTongTien(); 
+                    updateTongTien();
                 });
 
                 // ---- Cột 2: Tên thuốc ----
@@ -406,7 +427,7 @@ public class cart_GUI extends JFrame {
                 // ---- Cột 2.2: đơn vị ----
                 JPanel cotdonvi = new JPanel(new GridBagLayout());
                 cotdonvi.setOpaque(false);
-                JLabel donvi = new JLabel(c.getDonvi(), SwingConstants.LEFT); 
+                JLabel donvi = new JLabel(c.getDonvi(), SwingConstants.LEFT);
                 donvi.setPreferredSize(new Dimension(100, 50));
                 cotdonvi.add(donvi);
 
@@ -426,13 +447,13 @@ public class cart_GUI extends JFrame {
                             int newSL = Integer.parseInt(soluongnhap.getText());
                             if (newSL <= 0) {
                                 JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0.");
-                                soluongnhap.setText(String.valueOf(tempSL)); 
+                                soluongnhap.setText(String.valueOf(tempSL));
                                 return;
                             }
                             if (checkbuy.isSelected()) {
                                 selectedProducts.stream()
                                         .filter(product -> product.getMathuoc().equals(c.getMathuoc()))
-                                        .forEach(product -> product.setSoLuong(newSL)); 
+                                        .forEach(product -> product.setSoLuong(newSL));
                             }
 
                             if (newSL != tempSL) {
@@ -445,7 +466,7 @@ public class cart_GUI extends JFrame {
 
                         } catch (NumberFormatException ex) {
                             JOptionPane.showMessageDialog(null, "Số lượng nhập không hợp lệ!");
-                            soluongnhap.setText(String.valueOf(tempSL)); 
+                            soluongnhap.setText(String.valueOf(tempSL));
                         }
                     }
                 });
@@ -469,7 +490,6 @@ public class cart_GUI extends JFrame {
                 JLabel donGiaLabel = new JLabel(formattedPrice, SwingConstants.LEFT);
                 cot4.add(donGiaLabel);
 
-        
                 ImageIcon icon_delete = new ImageIcon(advance.img + "\\img_xt\\icons8-waste-40.png");
                 Image img_delete = icon_delete.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
                 ImageIcon delete_btn = new ImageIcon(img_delete);
@@ -478,7 +498,6 @@ public class cart_GUI extends JFrame {
                 xoasp.setPreferredSize(new Dimension(40, 40));
                 cot4.add(xoasp);
 
-               
                 xoasp.addActionListener(e -> {
                     int result = JOptionPane.showConfirmDialog(
                             null,

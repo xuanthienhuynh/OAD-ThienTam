@@ -11,6 +11,7 @@ import data.Arr_xt.medicineArr;
 import data.MyConnection;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.sql.*;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -508,7 +509,6 @@ public class customer_GUI extends JFrame implements MouseListener, ActionListene
                 public void mouseEntered(MouseEvent e) {
                     chinhgiua.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Chuyển thành bàn tay
                     main_center.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                    System.out.println("Image Path: " + imagePath);
 
                     main_center.setBorder(BorderFactory.createLineBorder(hong, 2));
 
@@ -931,38 +931,80 @@ public class customer_GUI extends JFrame implements MouseListener, ActionListene
                     });
 
                     // ------------------------
-                    // label hinh anh
-                    JPanel trai_content_pn = new JPanel();
+                    // // label hinh anh
+                    // JPanel trai_content_pn = new JPanel();
+                    // trai_content_pn.setBackground(hong);
+                    // trai_content_pn.setPreferredSize(new Dimension(500, 0));
+                    // trai_content_pn.setLayout(new BorderLayout());
+                    // // trai_content_pn.setBorder(new LineBorder(xam, 5));
+                    // content_detail.add(trai_content_pn, BorderLayout.WEST);
+
+                    // JPanel img_medicine = new JPanel();
+                    // img_medicine.setBackground(linen);
+                    // trai_content_pn.add(img_medicine, BorderLayout.CENTER);
+                    // //
+                    // String maSanPham = product.getMathuoc();
+                    // // String imagePath = advance.medIMG + maSanPham + ".png";
+                    // String imagePath = "D:\\DownLoads\\ThienTam\\img\\medIMG\\MTH0001.png";
+                    // ImageIcon productImage = new ImageIcon(imagePath);
+
+                    // int chieurong = 450;
+                    // int chieucao = 320;
+
+                    // Image img = productImage.getImage();
+                    // Image scaledImg = img.getScaledInstance(chieurong, chieucao,
+                    // Image.SCALE_SMOOTH);
+                    // productImage = new ImageIcon(scaledImg);
+
+                    // JLabel imageLabel = new JLabel(productImage);
+                    // imageLabel.setHorizontalAlignment(JLabel.CENTER);
+                    // imageLabel.setVerticalAlignment(JLabel.CENTER);
+                    // img_medicine.add(imageLabel, BorderLayout.CENTER);
+
+                    // img_medicine.revalidate();
+                    // img_medicine.repaint();
+
+                    //
+
+                    // Panel trái
+                    JPanel trai_content_pn = new JPanel(new BorderLayout());
                     trai_content_pn.setBackground(hong);
-                    trai_content_pn.setPreferredSize(new Dimension(500, 0));
-                    trai_content_pn.setLayout(new BorderLayout());
-                    // trai_content_pn.setBorder(new LineBorder(xam, 5));
+                    trai_content_pn.setPreferredSize(new Dimension(500, 400)); // hoặc bỏ dòng này
                     content_detail.add(trai_content_pn, BorderLayout.WEST);
 
-                    JPanel img_medicine = new JPanel();
+                    // Panel chứa ảnh
+                    JPanel img_medicine = new JPanel(new BorderLayout());
                     img_medicine.setBackground(linen);
                     trai_content_pn.add(img_medicine, BorderLayout.CENTER);
-                    //
+
+                    // Đường dẫn ảnh
                     String maSanPham = product.getMathuoc();
                     String imagePath = advance.medIMG + maSanPham + ".png";
-                    ImageIcon productImage = new ImageIcon(imagePath);
+                    // String imagePath = "D:\\DownLoads\\ThienTam\\img\\medIMG\\MTH0001.png";
 
+                    // Kiểm tra tồn tại file
+                    File f = new File(imagePath);
+                    System.out.println("Ảnh tồn tại: " + f.exists());
+
+                    // Load ảnh
+                    ImageIcon productImage = new ImageIcon(imagePath);
                     int chieurong = 450;
                     int chieucao = 320;
-
-                    Image img = productImage.getImage();
-                    Image scaledImg = img.getScaledInstance(chieurong, chieucao, Image.SCALE_SMOOTH);
+                    Image scaledImg = productImage.getImage().getScaledInstance(chieurong, chieucao,
+                            Image.SCALE_SMOOTH);
                     productImage = new ImageIcon(scaledImg);
 
+                    // Label hiển thị hình
                     JLabel imageLabel = new JLabel(productImage);
                     imageLabel.setHorizontalAlignment(JLabel.CENTER);
                     imageLabel.setVerticalAlignment(JLabel.CENTER);
+
+                    // Add label vào panel
                     img_medicine.add(imageLabel, BorderLayout.CENTER);
 
+                    // Cập nhật hiển thị
                     img_medicine.revalidate();
                     img_medicine.repaint();
-
-                    //
 
                     JPanel img_tren = new JPanel();
                     img_tren.setBackground(xamnhat);
